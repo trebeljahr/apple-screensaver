@@ -11,8 +11,8 @@ function setup() {
   createCanvas(window.innerWidth, window.innerHeight);
   const divisions = 20;
 
-  for (let i = 0; i < divisions; i++) {
-    for (let j = 0; j < divisions; j++) {
+  for (let i = 0; i < divisions + 2; i++) {
+    for (let j = 0; j < divisions + 2; j++) {
       const offsetX = i * Math.floor(width / divisions);
       const offsetY = j * Math.floor(height / divisions);
 
@@ -47,8 +47,10 @@ function draw() {
 
     lineObject.velocity.x += random(-0.1, 0.1);
     lineObject.velocity.y += random(-0.1, 0.1);
-    lineObject.point2.x = constrain(lineObject.point2.x, -10, 10);
-    lineObject.point2.y = constrain(lineObject.point2.y, -10, 10);
+    // lineObject.point2.x = constrain(lineObject.point2.x, -10, 10);
+    // lineObject.point2.y = constrain(lineObject.point2.y, -10, 10);
+
+    lineObject.point2 = { x: mouseX, y: mouseY };
   });
 }
 
