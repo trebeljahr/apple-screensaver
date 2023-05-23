@@ -10,7 +10,7 @@ const lineObjects = [
 function setup() {
   createCanvas(window.innerWidth, window.innerHeight);
   background(0);
-  rectMode(CORNERS);
+  // rectMode(CORNERS);
   const divisions = 40;
 
   for (let i = 0; i < divisions + 2; i++) {
@@ -89,7 +89,15 @@ function drawLine(point1, point2, lineColor) {
     to: [point2.x, point2.y],
     steps: [color(0), lineColor],
   });
+
+  push();
+
+  const angle = atan2(point2.y - point1.y, point2.x - point1.x);
+  translate(point1.x, point1.y);
+  rotate(angle);
   rect(point1.x, point1.y, point2.x, point2.y);
+
+  pop();
   // line(point1.x, point1.y, point2.x, point2.y);
 }
 
