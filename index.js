@@ -47,6 +47,8 @@ function draw() {
 
     lineObject.velocity.x += random(-0.1, 0.1);
     lineObject.velocity.y += random(-0.1, 0.1);
+    lineObject.point2.x = constrain(lineObject.point2.x, -10, 10);
+    lineObject.point2.y = constrain(lineObject.point2.y, -10, 10);
   });
 }
 
