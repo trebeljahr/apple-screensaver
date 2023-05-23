@@ -82,20 +82,20 @@ function draw() {
 }
 
 function drawLine(point1, point2, lineColor) {
-  stroke(lineColor);
-  strokeWeight(4);
-  fillGradient("linear", {
-    from: [point1.x, point1.y],
-    to: [point2.x, point2.y],
-    steps: [color(0), lineColor],
-  });
-
   push();
 
   const angle = atan2(point2.y - point1.y, point2.x - point1.x);
   translate(point1.x, point1.y);
   rotate(angle);
-  rect(point1.x, point1.y, point2.x, point2.y);
+  const lengthOfRect = 60;
+  const widthOfRect = 5;
+
+  fillGradient("linear", {
+    from: [0, 0],
+    to: [widthOfRect, lengthOfRect],
+    steps: [color(0), lineColor],
+  });
+  rect(0, 0, widthOfRect, lengthOfRect);
 
   pop();
   // line(point1.x, point1.y, point2.x, point2.y);
