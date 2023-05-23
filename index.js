@@ -10,7 +10,7 @@ const lineObjects = [
 function setup() {
   createCanvas(window.innerWidth, window.innerHeight);
   background(0);
-  const divisions = 20;
+  const divisions = 40;
 
   for (let i = 0; i < divisions + 2; i++) {
     for (let j = 0; j < divisions + 2; j++) {
@@ -44,7 +44,8 @@ const maxLength = 30;
 const noiseScale = 500;
 const noiseStrength = 1;
 
-function movePoint(point, dir, speed) {
+function flowFieldLines(lineObject, dir, speed) {
+  const point = lineObject.point2;
   const noiseFactor = noise(
     point.x / noiseScale,
     point.y / noiseScale,
@@ -54,35 +55,41 @@ function movePoint(point, dir, speed) {
   dir.x = cos(angle);
   dir.y = sin(angle);
   const vel = { x: dir.x, y: dir.y };
-  const d = 1;
+  const d = 20;
   vel.x = vel.x * speed * d;
   vel.y = vel.y * speed * d;
 
-  point.x += vel.x;
-  point.y += vel.y;
-
-  if (point.x < 0 || point.x > width || point.y < 0 || point.y > height) {
-    point.x = random(width * 1.2);
-    point.y = random(height);
-  }
+  drawLine(
+    lineObject.point1,
+    {
+      x: lineObject.point2.x + vel.x,
+      y: lineObject.point2.y + vel.y,
+    },
+    lineObject.color
+  );
 }
 
 function draw() {
   noStroke();
-  fill(0, 10);
-  rect(0, 0, width, height);
+  // fill(0, 10);
+  // rect(0, 0, width, height);
+  background(0);
 
   lineObjects.forEach((lineObject) => {
-    movePoint(lineObject.point2, lineObject.dir, lineObject.speed);
-    fill(lineObject.color);
-    circle(lineObject.point2.x, lineObject.point2.y, 10);
+    flowFieldLines(lineObject, lineObject.dir, lineObject.speed);
   });
 }
 
-function drawLine(point1, point2, color) {
-  stroke(color);
-  strokeWeight(2);
-  line(point1.x, point1.y, point2.x, point2.y);
+function drawLine(point1, point2, lineColor) {
+  stroke(lineColor);
+  strokeWeight(4);
+  fillGradient("linear", {
+    from: [point1.x, point1.y],
+    to: [point2.x, point2.y],
+    steps: [color(0), lineColor],
+  });
+  rect(point1.x + 10, point1.y, point2.x + 10, point2.y);
+  // line(point1.x, point1.y, point2.x, point2.y);
 }
 
 console.log("Hello World");
