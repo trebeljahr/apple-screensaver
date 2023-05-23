@@ -1,29 +1,53 @@
+const lineObjects = [
+  // {
+  //   point1: { x: 0, y: 0 },
+  //   point2: { x: 0, y: 0 },
+  //   color: color(180, 142, 166),
+  //   velocity: { x: 0, y: 0 },
+  // },
+];
+
 function setup() {
   createCanvas(window.innerWidth, window.innerHeight);
-}
-
-let timeOffsetX = 0;
-let timeOffsetY = 0;
-function draw() {
-  background(color(16, 2, 26));
   const divisions = 20;
-  timeOffsetX += 0.1;
-  timeOffsetY += 0.1;
-  for (let i = 0; i <= divisions; i++) {
-    for (let j = 0; j <= divisions; j++) {
+
+  for (let i = 0; i < divisions; i++) {
+    for (let j = 0; j < divisions; j++) {
       const offsetX = i * Math.floor(width / divisions);
       const offsetY = j * Math.floor(height / divisions);
 
-      drawLine(
-        { x: offsetX, y: offsetY },
-        {
-          x: divisions / 2 + offsetX + timeOffsetX,
-          y: divisions / 2 + offsetY + timeOffsetY,
+      const newLineObject = {
+        point1: { x: offsetX, y: offsetY },
+        point2: {
+          x: divisions / 2 + offsetX,
+          y: divisions / 2 + offsetY,
         },
-        color(180, 142, 166)
-      );
+        color: color(
+          180 + random(-30, 30),
+          40 + random(0, 50),
+          166 + random(-30, 30)
+        ),
+        velocity: { x: 0, y: 0 },
+      };
+
+      lineObjects.push(newLineObject);
     }
   }
+
+  console.log(lineObjects.length);
+  console.log(lineObjects);
+}
+
+function draw() {
+  background(color(16, 2, 26));
+  lineObjects.forEach((lineObject) => {
+    drawLine(lineObject.point1, lineObject.point2, lineObject.color);
+    lineObject.point2.x += lineObject.velocity.x;
+    lineObject.point2.y += lineObject.velocity.y;
+
+    lineObject.velocity.x += random(-0.1, 0.1);
+    lineObject.velocity.y += random(-0.1, 0.1);
+  });
 }
 
 function drawLine(point1, point2, color) {
