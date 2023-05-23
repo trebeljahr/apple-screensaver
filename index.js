@@ -12,11 +12,11 @@ function setup() {
 
       const pointObject = {
         point: { x: offsetX, y: offsetY },
-        color: color(
-          180 + random(-30, 30),
-          40 + random(0, 50),
-          166 + random(-30, 30)
-        ),
+        color: {
+          r: 180 + random(-30, 30),
+          g: 40 + random(0, 50),
+          b: 166 + random(-30, 30),
+        },
       };
 
       pointObjects.push(pointObject);
@@ -27,14 +27,11 @@ function setup() {
   console.log(pointObjects);
 }
 
-const maxLength = 30;
 const noiseScale = 500;
-const noiseStrength = 1;
+const noiseStrength = 2;
 
 function draw() {
   noStroke();
-  // fill(0, 10);
-  // rect(0, 0, width, height);
   background(0);
 
   pointObjects.forEach((lineObject) => {
@@ -43,30 +40,40 @@ function draw() {
 }
 
 function drawRectangle(point, lineColor) {
-  push();
-
-  const noiseFactor = noise(
+  const colorNoiseFactor = noise(
     point.x / noiseScale,
     point.y / noiseScale,
     frameCount / noiseScale
   );
 
+  const transparency = map(colorNoiseFactor, 0, 1, 0, 255);
+
+  const noiseFactor =
+    1 -
+    noise(
+      point.x / noiseScale,
+      point.y / noiseScale,
+      frameCount / 2 / noiseScale
+    );
+
   let angle = noiseFactor * TWO_PI * noiseStrength;
 
+  push();
   translate(point.x, point.y);
   rotate(angle);
 
-  const lengthOfRect = 60;
+  const lengthOfRect = 60 + noiseFactor * 100;
   const widthOfRect = 5;
 
   fillGradient("linear", {
     from: [0, 0],
     to: [widthOfRect, lengthOfRect],
-    steps: [color(0, 0, 0, 0), lineColor],
+    steps: [
+      color(20, 20, 20, 0),
+      color(lineColor.r, lineColor.g, lineColor.b, transparency),
+    ],
   });
   rect(0, 0, widthOfRect, lengthOfRect);
 
   pop();
 }
-
-console.log("Hello World");
