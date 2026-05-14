@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://trebeljahr.github.io/apple-screensaver/sitemap.xml
